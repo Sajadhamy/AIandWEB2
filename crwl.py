@@ -1,9 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin #to join the base url with the relative url
+from urllib.parse import urljoin, urlparse #to join the base url with the relative url and extract the domain of each link
 
 class WebCrawler:
-    def __init__(self, baseURL, max_depth = 2):
+    def __init__(self, baseURL, max_depth = 5):
         """
         initializing the crawler
         baseURL: starting URL
@@ -12,6 +12,7 @@ class WebCrawler:
         self.baseURL = baseURL
         self.max_depth = max_depth
         self.visitedURLs = set() #initialize an empty set as a it remember the URLs that already visited
+        self.base_domain = urlparse(baseURL).netloc
 
     def fetch_page(self, url):
         """
@@ -20,32 +21,32 @@ class WebCrawler:
         returns the content as a string or None if it fails.
         """
         try: 
-            response = requests.get(url)    #retrieve the url in 5 sec
-            if response.status_code == 200: #checking the request status is successful
-                return response.text        #returning the content as s string
-            else:                           #if the request is not successful return nothing
-                print(f"Fail to fetch{url}. Status code: P{response.status_code}")
+            response = requests.get(url, timeout=5)    #retrieve the url in 5 sec
+            if response.status_code == 200 and "text/html" in response.headers.get("Content-type", ""):            #checking the request status is successful and is an HTML
+                return response.text                   #returning the content as s string
+            else:                                      #if the request is not successful return nothing
+                print(f"Skipped non-HTML or unsuccessful response: {url} (Statues: {response.status_code})")
                 return None
         except requests.RequestException as e: 
                                             #all other possible errors return nothing 
             print(f"Error fetching {url}: {e}")
             return None
         
-    def parse_links(self, html, baseURL):
+    def parse_links(self, html, currentURL):
         """
         extracting hyperlinks from the html content
         html: the html content of the page
         return a list of absolute urls
         """
-        soup = BeautifulSoup(html,"html parser")
+        soup = BeautifulSoup(html,"html.parser")
         links = []                                      #initializing the list of URLs
 
         for tag in soup.find_all("a", href = True):     #finding all the hyperlinks
             relativeURL = tag['href']
-            absoluteURL = urljoin(baseURL, relativeURL) #resolve the urls to an absolute format
-            if absoluteURL.startswith("http"):          #filtering only http links
+            absoluteURL = urljoin(currentURL, relativeURL) #resolve the urls to an absolute format
+            parsedURL = urlparse(absoluteURL)
+            if parsedURL.netloc == self.base_domain:          #filtering only the links within the same domain
                 links.append(absoluteURL)
-
         return links
 
 
@@ -67,8 +68,15 @@ class WebCrawler:
         
         self.visitedURLs.add(URL)                   #adding the currnt url to visited ones
 
-        links = self.parse_links(URL)               #extracting all the valid links 
+        links = self.parse_links(html, URL)               #extracting all the valid links 
 
         for link in links:                          #crawling the links
             self.crawl(link, depth + 1)
 
+
+if __name__ == "__main__":
+    start_url = "https://vm009.rz.uos.de/crawl/index.html"
+    max_depth = 2  # Adjust as needed
+
+    crawler = WebCrawler(start_url, max_depth)
+    crawler.crawl(start_url)
