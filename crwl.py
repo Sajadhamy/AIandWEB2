@@ -72,11 +72,3 @@ class WebCrawler:
 
         for link in links:                          #crawling the links
             self.crawl(link, depth + 1)
-
-
-if __name__ == "__main__":
-    start_url = "https://vm009.rz.uos.de/crawl/index.html"
-    max_depth = 2  # Adjust as needed
-
-    crawler = WebCrawler(start_url, max_depth)
-    crawler.crawl(start_url)
