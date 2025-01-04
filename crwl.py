@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse #to join the base url with the relative url and extract the domain of each link
+from index_builder import build_index
+from collections import defaultdict
+
 
 class WebCrawler:
     def __init__(self, baseURL, max_depth = 5):
@@ -12,6 +15,7 @@ class WebCrawler:
         self.baseURL = baseURL
         self.max_depth = max_depth
         self.visitedURLs = set() #initialize an empty set as a it remember the URLs that already visited
+        self.index = defaultdict(list) #initialize an empty dictionary for the content index
         self.base_domain = urlparse(baseURL).netloc
 
     def fetch_page(self, url):
@@ -63,9 +67,10 @@ class WebCrawler:
         print(f"crawling {URL} in depth {depth}")   #just to see what going on
 
         html = self.fetch_page(URL)                 #downloading the current url's page
-        if not html:
-            return
-        
+
+        if html:                                    #using the index builder file
+            build_index(html, URL, self.index)
+
         self.visitedURLs.add(URL)                   #adding the currnt url to visited ones
 
         links = self.parse_links(html, URL)               #extracting all the valid links 
