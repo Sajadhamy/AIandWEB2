@@ -1,3 +1,6 @@
+"""this was my first index_builder for week 1 but then I made another using 
+ whoosh so I am not using this on but I am keeping it so I can return 
+to it for future references. So you can just ignore it"""
 from collections import defaultdict     #to handle dictionaries easier
 import re   #for text processing
 from bs4 import BeautifulSoup
