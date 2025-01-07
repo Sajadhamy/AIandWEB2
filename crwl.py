@@ -1,22 +1,28 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse #to join the base url with the relative url and extract the domain of each link
-from index_builder import build_index
+from index_builder_whoosh import initialize_index, add_to_index
 from collections import defaultdict
+import os
 
 
 class WebCrawler:
-    def __init__(self, baseURL, max_depth = 5):
+    def __init__(self, baseURL, max_depth = 5, index_dir="index"):
         """
         initializing the crawler
         baseURL: starting URL
         max_depth: depths of the links to follow
+        index_dir: dir for the whoosh indx
         """
         self.baseURL = baseURL
         self.max_depth = max_depth
         self.visitedURLs = set() #initialize an empty set as a it remember the URLs that already visited
-        self.index = defaultdict(list) #initialize an empty dictionary for the content index
         self.base_domain = urlparse(baseURL).netloc
+        self.index_dir = index_dir
+
+        if not os.path.exists(index_dir): #initialize whoosh indx
+            os.mkdir(index_dir)
+        initialize_index(index_dir)
 
     def fetch_page(self, url):
         """
@@ -68,8 +74,8 @@ class WebCrawler:
 
         html = self.fetch_page(URL)                 #downloading the current url's page
 
-        if html:                                    #using the index builder file
-            build_index(html, URL, self.index)
+        if html:                                    #add the contnt to the woosh indx
+            add_to_index(self.index_dir, URL, html)
 
         self.visitedURLs.add(URL)                   #adding the currnt url to visited ones
 
