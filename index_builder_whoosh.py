@@ -18,7 +18,9 @@ def initialize_index(index_dir="index"):
     """
     if not os.path.exists(index_dir):
         os.mkdir(index_dir)
+    print(f"Initializing index at {index_dir}...")   
     return create_in(index_dir, schema)
+   
 
 # Add documents to the index
 def add_to_index(index_dir="index", url=None, html=None):
@@ -31,10 +33,7 @@ def add_to_index(index_dir="index", url=None, html=None):
     ix = open_dir(index_dir)
     writer = AsyncWriter(ix)
     soup = BeautifulSoup(html, "html.parser")
-    if soup.title:
-        title = soup.title.string.strip()
-    else:
-        "No Title"
+    title = soup.title.string.strip() if soup.title else "No Title"
     
     # extract a teaser/snippet (use meta description or first 200 characters of text)
     teaser = ""

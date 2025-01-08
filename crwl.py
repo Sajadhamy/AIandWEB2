@@ -7,7 +7,7 @@ import os
 
 
 class WebCrawler:
-    def __init__(self, baseURL, max_depth = 5, index_dir="index"):
+    def __init__(self, baseURL="https://vm009.rz.uos.de/crawl/index.html", max_depth = 5, index_dir="index"):
         """
         initializing the crawler
         baseURL: starting URL
@@ -77,9 +77,14 @@ class WebCrawler:
         if html:                                    #add the contnt to the woosh indx
             add_to_index(self.index_dir, URL, html)
 
-        self.visitedURLs.add(URL)                   #adding the currnt url to visited ones
+            self.visitedURLs.add(URL)                   #adding the currnt url to visited ones
 
-        links = self.parse_links(html, URL)               #extracting all the valid links 
+            links = self.parse_links(html, URL)               #extracting all the valid links 
 
-        for link in links:                          #crawling the links
-            self.crawl(link, depth + 1)
+            for link in links:                          #crawling the links
+                self.crawl(link, depth + 1)
+
+
+if __name__ == "__main__":          #instantiate the WebCrawler with the base URL.
+    crawler = WebCrawler()
+    crawler.crawl(crawler.baseURL)
