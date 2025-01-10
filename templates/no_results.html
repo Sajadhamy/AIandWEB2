@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sajjad's Search Engine - No Results Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="centered-container">
+        <h1>No results found for '{{ query }}'</h1>
+        <form action="/search" method="get">
+            <input type="text" name="q" placeholder="Enter your search query" value="{{ query }}" required>
+            <button type="submit">Search</button>
+        </form>
+        <a href="/">Back to Home</a>
+    </div>
+</body>
+</html>

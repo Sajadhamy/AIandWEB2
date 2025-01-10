@@ -1,0 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    line-height: 1.6;
+}
+
+h1 {
+    color: white; /* Adjust text colors for readability on the background */
+}
+
+h3 {
+    color: white; /* Adjust text colors for readability on the background */
+}
+
+p {
+    color: white; /* Adjust text colors for readability on the background */
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    width: 300px;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 20px;
+}
+
+a {
+    color: white; /* Adjust text colors for readability on the background */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+/* Center container */
+.centered-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full viewport height */
+    text-align: center;
+}
+
+/* just a pucture I took from near my hometown so it has a background */
+body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-image: url("/static/background.JPG"); /* Direct URL to the image */
+        background-size: cover; /* Scale the image to cover the entire page */
+        background-position: center; /* Center the image */
+        background-attachment: fixed; /* Keep the background fixed on scroll */
+        color: white; /* Ensure text is readable */
+}
+
