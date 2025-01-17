@@ -1,6 +1,6 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for
 from markupsafe import Markup
-from index_builder_whoosh import initialize_index, search_index, add_to_index
+from AIandWEB2.index_builder_whoosh import initialize_index, search_index, add_to_index
 
 app = Flask(__name__)
 
@@ -27,7 +27,7 @@ def index():
         return f"Error indexing URL {url}: {e}", 500
 
 
-@app.route("/search")
+@app.route("/search", methods =["GET"])
 def search():
     query = request.args.get("q", "").strip()   # request.args.get("q"): Extracts the q parameter from the URL.
                                                 #strip(): Removes leading or trailing spaces from the query.

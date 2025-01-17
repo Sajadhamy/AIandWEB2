@@ -9,7 +9,7 @@
 <body>
     <div class="centered-container">
         <h1>No results found for '{{ query }}'</h1>
-        <form action="/search" method="get">
+        <form action="{{url_for("search") }}" method="GET">
             <input type="text" name="q" placeholder="Enter your search query" value="{{ query }}" required>
             <button type="submit">Search</button>
         </form>

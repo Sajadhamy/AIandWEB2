@@ -73,7 +73,7 @@ a:hover {
 body {
         margin: 0;
         font-family: Arial, sans-serif;
-        background-image: url("/static/background.JPG"); /* Direct URL to the image */
+        background-image: url("background.JPG"); /* Direct URL to the image */
         background-size: cover; /* Scale the image to cover the entire page */
         background-position: center; /* Center the image */
         background-attachment: fixed; /* Keep the background fixed on scroll */
